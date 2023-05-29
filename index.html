@@ -37,332 +37,452 @@
 </head>
 
 <body>
-
     <div class="m-0 mt-2 mb-2">        
-
         <div class="d-flex align-items-center justify-content-center">
-
             <img id="logo" src="assets/helios-static.png">
-
             <div class="p-3 m-0">
-
-                <p class="h2 m-0 c">HELIOS BURN</p>
-
-                <p class="h5 m-0">Burn tokens to receive <a href="https://hive.io/" target="_blank"><span style="vertical-align: middle; color: #FDBB52;">HIVE</span></a> upvotes!</p>
-
+                <p class="font-family-size-large m-0 c">HELIOS BURN</p>
+                <p class="font-family-size-medium m-0">Burn tokens to receive <a href="https://hive.io/" target="_blank"><span style="vertical-align: middle; color: #FDBB52;">HIVE</span></a> upvotes!</p>
             </div>
-
         </div>        
-
     </div>
 
     <div id="mbody" class="mt-0 d-flex justify-content-center">
-
-        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card" style="width:30%">
-
-            <div class="m-4">
-
-                <p class="h3 mb-3">Wallet</p>
-
-                <div class="d-flex mb-3">
-
-                    <div class="input-group d-flex flex-nowrap">            
-
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card column-one-size">
+            <div class="m-3">
+                <p class="font-family-size-medium-large mb-3">Wallet</p>
+                <div class="d-flex mb-2">
+                    <div class="input-group input-group-sm d-flex flex-nowrap load-change">            
                         <span class="input-group-text" id="usymbol">@</span>
-
                         <input type="text" class="input form-control" id="username" placeholder="Username">
-
-                        <button type="button" id="checkbalance" class="btn btn-warning col ms-2 rounded-pill">Load</button>
-
+                        <button type="button" id="checkbalance" class="btn btn-warning ms-2 rounded-pill btn-load">Load</button>
                     </div>
-
                 </div>
-
-                <div class="d-flex flex-column mb-3">
-
-                    <p class="m-0"><span class="s pointer"><span id="helios" class="qt">0</span> <span class="sym">HELIOS</span></span></p>
-
-                    <p class="m-0"><span class="pointer">$ <span id="helios_bal_value" class="qt">0</span></span></p>
-
-                </div>
-
-                <div class="mt-5 d-flex">
-
-                    <div class="d-flex flex-column box f gradient-style burn">
-
-                        <a class="h5 link-light" href="https://flag.helios.surf/" target="_blank" class="link-light">
-
-                            <span style="vertical-align: middle;">BURN HELIOS FOR DOWNVOTES&nbsp;</span>
-
-                            <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-
-                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-
-                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-
-                            </svg>
-
-                        </a>                        
-
+                <div class="d-flex mb-2">
+                    <div class="wallet-div-one">
+                        <p class="m-0"><span class="pointer font-family-size-medium"><span id="helios_bal" class="qt qty-color">0</span> <span class="sym">HELIOS</span></span></p>
                     </div>
-
-                </div>
-
-                <div class="mt-2 d-flex">
-
-                    <div class="d-flex flex-column box f gradient-style">
-
-                        <a class="h5 link-light" href="https://acc.helios.surf/" target="_blank" class="link-light">
-
-                            <span style="vertical-align: middle;">CREATE ACCOUNTS BY&nbsp;</span>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="vertical-align: middle;" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
-
-                                <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/>
-
-                            </svg>
-
-                            <span style="vertical-align: middle;">&nbsp;HELIOS&nbsp;</span>
-
-                            <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-
-                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-
-                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-
-                            </svg>
-
-                        </a>                        
-
+                    <div class="wallet-div-two">
+                        <p class="m-0"><span class="pointer font-family-size-small-medium">$ <span id="helios_bal_value" class="qt qty-color">0</span></span></p>
                     </div>
-
                 </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 flex-grow-1 card" style="width:40%">
-
-            <div class="m-4">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <p class="h3 mb-3">Use Service</p>
-
-                    <span class="h6 mb-3">
-
-                        Minimum:&nbsp;
-
-                        <span id="minimum" class="h6 mb-3 text-info">5 HELIOS</span>
-
-                    </span>
-
-                </div>
-
-                <div class="d-flex mb-3">
-
-                    <input type="number" class="input form-control a" id="inputquantity" placeholder="Quantity">
-
-                    <select disabled id="input" class="form-select form-select-lg input b" style="width: initial; background-color: #ffff;">
-
-                        <option value="HELIOS">HELIOS</option>
-
-                    </select>
-
-                </div>
-
-                <div class="d-flex mt-3">
-
-                    <input type="text" class="input form-control f" id="post" placeholder="Post Link">
-
-                </div>
-
-                <p class="mt-2">Estimated Value: <span id="es_val" class="text-info">$ 0</span></p>
-
-                <button type="button" id="swap" class="btn btn-warning col rounded-pill mb-3 w-100" disabled>
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" style="vertical-align: middle;" fill="currentColor" class="bi bi-fire" viewBox="0 0 16 16">
-
-                        <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/>
-
-                    </svg>
-
-                    <span style="vertical-align: middle;">Burn</span>
-
-                </button>
-
-                <div class="d-flex align-items-center">
-
-                    <div id="loading" class="d-none spinner-border text-danger"></div>
-
-                    <span id="status" class="ms-3"></span>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card" style="width:30%">
-
-            <div class="m-4">
-
-                <p class="h3 mb-3">
-
-                    <span style="vertical-align: middle;">Market Detail</span>
-
-                    <button style="vertical-align: middle;" type="button" id="refresh" class="col btn-sm btn-info ms-2 rounded-pill">Refresh</button>
-
-                </p>
-
-                <div class="d-flex mb-2 align-items-center">
-
-                    <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
-
-                        <img class="market" src="assets/helios-static.png">
-
-                    </a>
-
-                    <div class="ms-3 d-flex flex-column">
-
-                        <span class="h5">HELIOS</span>
-
-                        <span class="h6">Price: <span class="text-info" id="helios_price">0.00</span> <span class="text-info">HIVE</span></span>
-
-                        <span class="h6">Value: $ <span class="text-info" id="helios_value">0.00</span></span>
-
-                        <span class="h6">Volume: $ <span class="text-info" id="helios_vol">0.00</span></span>
-
-                        <span class="h6">Change: <span class="text-info" id="helios_change">0.00</span></span>
-
-                        <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
-
-                            <span class="text-warning">
-
-                                <span style="vertical-align: middle;">Trade Helios&nbsp;</span>
-
-                                <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-
-                                    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-
-                                    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-
-                                </svg>
-
-                            </span>
-
-                        </a>
-
+                <div class="d-flex mb-2">
+                    <div class="wallet-div-one">
+                        <p class="m-0"><span class="pointer font-family-size-medium"><span id="athon_bal" class="qt qty-color">0</span> <span class="sym">ATH</span></span></p>
                     </div>
-
+                    <div class="wallet-div-two">
+                        <p class="m-0"><span class="pointer font-family-size-small-medium">$ <span id="athon_bal_value" class="qt qty-color">0</span></span></p>
+                    </div>
                 </div>
-
-                <div class="mt-4">
-
-                    <span class="h5" style="vertical-align: middle;">Join us:</span>
-
+                <hr>
+                <div class="d-flex mb-2">
+                    <span class="font-family-size-medium-large join-style">Join us:</span>
                     <a href="https://discord.gg/DVpNmTfwHC" target="_blank" class="link-light m-2">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
-
+                        <svg class="discord-color" xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M13.545 2.907a13.227 13.227 0 0 0-3.257-1.011.05.05 0 0 0-.052.025c-.141.25-.297.577-.406.833a12.19 12.19 0 0 0-3.658 0 8.258 8.258 0 0 0-.412-.833.051.051 0 0 0-.052-.025c-1.125.194-2.22.534-3.257 1.011a.041.041 0 0 0-.021.018C.356 6.024-.213 9.047.066 12.032c.001.014.01.028.021.037a13.276 13.276 0 0 0 3.995 2.02.05.05 0 0 0 .056-.019c.308-.42.582-.863.818-1.329a.05.05 0 0 0-.01-.059.051.051 0 0 0-.018-.011 8.875 8.875 0 0 1-1.248-.595.05.05 0 0 1-.02-.066.051.051 0 0 1 .015-.019c.084-.063.168-.129.248-.195a.05.05 0 0 1 .051-.007c2.619 1.196 5.454 1.196 8.041 0a.052.052 0 0 1 .053.007c.08.066.164.132.248.195a.051.051 0 0 1-.004.085 8.254 8.254 0 0 1-1.249.594.05.05 0 0 0-.03.03.052.052 0 0 0 .003.041c.24.465.515.909.817 1.329a.05.05 0 0 0 .056.019 13.235 13.235 0 0 0 4.001-2.02.049.049 0 0 0 .021-.037c.334-3.451-.559-6.449-2.366-9.106a.034.034 0 0 0-.02-.019Zm-8.198 7.307c-.789 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.45.73 1.438 1.613 0 .888-.637 1.612-1.438 1.612Zm5.316 0c-.788 0-1.438-.724-1.438-1.612 0-.889.637-1.613 1.438-1.613.807 0 1.451.73 1.438 1.613 0 .888-.631 1.612-1.438 1.612Z"></path>
-
                         </svg>
-
                     </a>
-
                     <a href="https://peakd.com/@helios.voter/posts" target="_blank" class="link-light m-2">
-
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 220 190">
-
-                            <defs><style>.cls-1{fill:#ffff;}</style></defs>
-
-                            <title>hive-hive-logo</title>
-
+                            <defs class="cls-1"></defs>
                             <g id="Layer_2" data-name="Layer 2">
-
                                 <g id="Layer_1-2" data-name="Layer 1">
-
                                     <path class="cls-1" d="M157.27,107.26a1,1,0,0,1,.82,1.42l-46.75,80.85a1,1,0,0,1-.82.47H81.94a.94.94,0,0,1-.81-1.42l46.75-80.85a.94.94,0,0,1,.81-.47ZM129.48,84.09a1,1,0,0,1-.82-.47L81.13,1.42A.94.94,0,0,1,81.94,0h28.58a1,1,0,0,1,.82.47l47.53,82.2a.94.94,0,0,1-.81,1.42Z"/>
-
                                     <path class="cls-1" d="M135.13,1.42A.94.94,0,0,1,136,0h28.62a.93.93,0,0,1,.81.47l54.49,94.06a.93.93,0,0,1,0,.94l-54.49,94.06a.93.93,0,0,1-.81.47H136a.94.94,0,0,1-.82-1.42L189.34,95Zm-23.26,93.1a1,1,0,0,1,0,1L57.13,189.53a1,1,0,0,1-1.65,0L.13,95.48a1,1,0,0,1,0-1L54.87.47a1,1,0,0,1,1.65,0Z"/>
-
                                 </g>
-
                             </g>
-
                         </svg>
-
                     </a>
-
                 </div>
-
+                <hr>
+                <div class="d-flex mb-2 align-items-center">     
+                    <div class="d-flex flex-column box f gradient-style burn">
+                        <a class="link-light link-button  link-button-div-align" href="https://flag.helios.surf/" target="_blank">
+                            <span class="font-family-size-small-medium link-button-align link-button-font">BURN FOR DOWNVOTES&nbsp;</span>
+                            <svg class="link-button-align" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex mb-2 align-items-center">                         
+                    <div class="d-flex flex-column box f gradient-style burn">
+                        <a class="link-light link-button  link-button-div-align" href="https://acc.helios.surf/" target="_blank">
+                            <span class="font-family-size-small-medium link-button-align link-button-font">HELIOS CREATE ACCOUNTS&nbsp;</span>
+                            <svg class="link-button-align" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                            </svg>
+                        </a>
+                    </div>                     
+                </div>               
+                <!--
+                    <div class="d-flex flex-column box f">
+                        <a class="font-family-size-medium link-light" href="https://uswap.app/" target="_blank">
+                            <span style="vertical-align: middle;">Use USWAP.APP Swap Bridge&nbsp;</span>
+                            <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                            </svg>
+                        </a>
+                        <div id="bridge" class="d-flex d-none alignclass">
+                            <div class="d-flex flex-column align-items-center alignclass">
+                                <span class="font-family-size-medium">HIVE</span>
+                                <span id="hive_liq" class="font-family-size-medium text-info">0</span>
+                            </div>
+                            <span class="font-family-size-medium ms-3 me-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
+                                </svg>
+                            </span>
+                            <div class="d-flex flex-column align-items-center alignclass">
+                                <span class="font-family-size-medium">SWAP.HIVE</span>
+                                <span id="swap_liq" class="font-family-size-medium text-info">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    -->
             </div>
-
         </div>
 
-    </div>
-
-    <div id="historycard" class="mbody mt-0 d-none justify-content-center">
-
-    <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card w-100">
-
-    <div class="m-4">
-
-        <div class="d-flex align-items-center mb-3">
-
-            <p class="h3 m-0">Vote History</p>
-
-            <button type="button" id="refreshHistory" class="col1 btn-sm btn-danger ms-3 rounded-pill">Refresh</button>
-
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 flex-grow-1 card column-two-size">
+            <div class="m-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="font-family-size-medium-large mb-2">Use Service</p>
+                    <span class="font-family-size-small-medium mb-2">
+                        Minimum:&nbsp;
+                        <span id="minimum" class="font-family-size-small-medium mb-2 text-info">5 HELIOS</span>
+                        &nbsp;||&nbsp;
+                        <span id="minimum" class="font-family-size-small-medium mb-2 text-info">10 ATHON</span>
+                    </span>
+                </div>
+                <div class="d-flex mt-2">
+                    <div class="input-group input-group-sm d-flex flex-nowrap">
+                        <input type="text" class="input form-control postlink-change" id="postlink" placeholder="Post Link">
+                    </div>
+                </div>
+                <div class="d-flex mt-3 align-items-center">
+                    <div class="service-container-surf d-flex align-items-center">
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-one-width">
+                            <span class="p-alignment font-family-size-small-medium">HELIOS-SURF :</span>
+                        </div>                                                                                      
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-two-width">
+                            <svg id="surf-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                            </svg>
+                            &nbsp;
+                            <span id="surf-avail" class="avail-style">Available</span>
+                        </div>
+                        <div class="flex-grow-1 ml-3 justify-content-end div-three-width">
+                            <div class="input-div-change d-flex input-group input-group-sm">
+                                <input type="number" class="input form-control input-change" id="input-surf-avail" placeholder="Quantity" disabled>
+                                <div class="input-group-append input-group-sm">
+                                    <select disabled id="button-surf-avail" class="form-select form-select-lg input select-change">
+                                        <option value="HELIOS">HELIOS</option>
+                                        <option value="ATHON">ATHON</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex justify-content-end div-four-width">
+                            <button id="add-surf-avail" class="btn-sm btn btn-primary ml-3 font-family-size-small btn-add" disabled>Add</button>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center justify-content-end div-five-width">
+                            <button id="surf-add-button" class="avail-button" disabled>
+                                <svg id="surf-add-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                    <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                    <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>                      
+                </div>
+                <div class="d-flex mt-3 align-items-center">
+                    <div class="service-container-surf d-flex align-items-center">
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-one-width">
+                            <span class="p-alignment font-family-size-small-medium">HELIOS-BEE :</span>
+                        </div>                                                                                      
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-two-width">
+                            <svg id="bee-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                            </svg>
+                            &nbsp;
+                            <span id="bee-avail" class="avail-style">Available</span>
+                        </div>
+                        <div class="flex-grow-1 ml-3 justify-content-end div-three-width">
+                            <div class="input-div-change d-flex input-group input-group-sm">
+                                <input type="number" class="input form-control input-change" id="input-bee-avail" placeholder="Quantity" disabled>
+                                <div class="input-group-append input-group-sm">
+                                    <select disabled id="button-bee-avail" class="form-select form-select-lg input select-change">
+                                        <option value="HELIOS">HELIOS</option>
+                                        <option value="ATHON">ATHON</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex justify-content-end div-four-width">
+                            <button id="add-bee-avail" class="btn-sm btn btn-primary ml-3 font-family-size-small btn-add" disabled>Add</button>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center justify-content-end div-five-width">
+                            <button id="bee-add-button" class="avail-button" disabled>
+                                <svg id="bee-add-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                    <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                    <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>                      
+                </div>
+                <div class="d-flex mt-3 align-items-center">
+                    <div class="service-container-surf d-flex align-items-center">
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-one-width">
+                            <span class="p-alignment font-family-size-small-medium">HELIOS-POB :</span>
+                        </div>                                                                                      
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center div-two-width">
+                            <svg id="pob-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                            </svg>
+                            &nbsp;
+                            <span id="pob-avail" class="avail-style">Available</span>
+                        </div>
+                        <div class="flex-grow-1 ml-3 justify-content-end div-three-width">
+                            <div class="input-div-change d-flex input-group input-group-sm">
+                                <input type="number" class="input form-control input-change" id="input-pob-avail" placeholder="Quantity" disabled>
+                                <div class="input-group-append input-group-sm">
+                                    <select disabled id="button-pob-avail" class="form-select form-select-lg input select-change">
+                                        <option value="HELIOS">HELIOS</option>
+                                        <option value="ATHON">ATHON</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex justify-content-end div-four-width">
+                            <button id="add-pob-avail" class="btn-sm btn btn-primary ml-3 font-family-size-small btn-add" disabled>Add</button>
+                        </div>
+                        <div class="flex-grow-1 ml-3 d-flex align-items-center justify-content-end div-five-width">                            
+                            <button id="pob-add-button" class="avail-button" disabled>
+                                <svg id="pob-add-svg" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="avail-svg" viewBox="0 0 16 16">
+                                    <path d="M3 14.5A1.5 1.5 0 0 1 1.5 13V3A1.5 1.5 0 0 1 3 1.5h8a.5.5 0 0 1 0 1H3a.5.5 0 0 0-.5.5v10a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V8a.5.5 0 0 1 1 0v5a1.5 1.5 0 0 1-1.5 1.5H3z"/>
+                                    <path d="m8.354 10.354 7-7a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0z"/>
+                                </svg> 
+                            </button>
+                        </div>                          
+                    </div>                      
+                </div>
+                <div class="d-flex mt-3 align-items-center"> 
+                    <div class="d-flex flex-column justify-content-between align-items-center">
+                        <div class="text-data-alignment">                   
+                            <p class="font-family-size-medium mb-1">Total Burn Amount: <span id="total_burn" class="font-family-size-medium text-info">0</span></p>
+                        </div>
+                        <div class="text-data-alignment">                     
+                            <p class="font-family-size-medium">Estimated Value: <span id="burn_usd_val" class="font-family-size-medium text-info">$ 0</span></p>
+                        </div>
+                    </div>                    
+                </div>
+                <div class="d-flex mt-0 align-items-center">
+                    <button type="button" id="burn-token" class="btn rounded-pill mb-3 w-100 btn-group btn-group-sm btn-scale d-flex justify-content-center btn-burn" disabled>
+                        <svg class="burn-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                            <path d="M8 16c3.314 0 6-2 6-5.5 0-1.5-.5-4-2.5-6 .25 1.5-1.25 2-1.25 2C11 4 9 .5 6 0c.357 2 .5 4-2 6-1.25 1-2 2.729-2 4.5C2 14 4.686 16 8 16Zm0-1c-1.657 0-3-1-3-2.75 0-.75.25-2 1.25-3C6.125 10 7 10.5 7 10.5c-.375-1.25.5-3.25 2-3.5-.179 1-.25 2 1 3 .625.5 1 1.364 1 2.25C11 14 9.657 15 8 15Z"/>
+                        </svg>
+                        <span class="burn-style">Burn</span>
+                    </button>                    
+                </div>
+                <div class="d-flex mt-2 align-items-center">
+                    <div id="loading" class="d-none spinner-border text-danger loading-style"></div>
+                    <span id="status" class="ms-3"></span>
+                </div>
+            </div>
         </div>
 
-        <div class="tb-div">
-
-            <table class="htable">
-
-                <thead>
-
-                    <tr>
-
-                        <th>AUTHOR</th>
-
-                        <th>PERMLINK</th>
-
-                        <th>WEIGHT</th>
-
-                        <th>TIME</th>
-
-                        <th></th>
-
-                    </tr>
-
-                </thead>
-
-
-
-                <tbody id="history">
-
-
-
-                </tbody>
-
-            </table>
-
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card column-three-size">
+            <div class="m-3">
+                <p class="font-family-size-medium-large mb-2">
+                    <span class="market-style">Market Detail</span>
+                    <button type="button" id="refresh" class="col btn-sm btn-info ms-2 rounded-pill">Refresh</button>
+                </p>
+                <div class="d-flex mb-2 align-items-center">
+                    <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
+                        <img class="market" src="assets/helios-static.png">
+                    </a>
+                    <div class="ms-3 d-flex flex-column">
+                        <span class="font-family-size-medium">HELIOS</span>
+                        <span class="font-family-size-small-medium">Price: <span class="text-info" id="helios_price">0.00</span> <span class="text-info">HIVE</span></span>
+                        <span class="font-family-size-small-medium">Value: $ <span class="text-info" id="helios_value">0.00</span></span>
+                        <span class="font-family-size-small-medium">Volume: $ <span class="text-info" id="helios_vol">0.00</span></span>
+                        <span class="font-family-size-small-medium">Change: <span class="text-info" id="helios_change">0.00</span></span>
+                        <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
+                            <span class="text-warning">
+                                <span class="market-style">Trade Helios&nbsp;</span>
+                                <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div> 
+                <hr>
+                <div class="d-flex mb-2 align-items-center">
+                    <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
+                        <img class="market" src="assets/ath-static.png">
+                    </a>
+                    <div class="ms-3 d-flex flex-column">
+                        <span class="font-family-size-medium">ATHON</span>
+                        <span class="font-family-size-small-medium">Price: <span class="text-info" id="athon_price">0.00</span> <span class="text-info">HIVE</span></span>
+                        <span class="font-family-size-small-medium">Value: $ <span class="text-info" id="athon_value">0.00</span></span>
+                        <span class="font-family-size-small-medium">Volume: $ <span class="text-info" id="athon_vol">0.00</span></span>
+                        <span class="font-family-size-small-medium">Change: <span class="text-info" id="athon_change">0.00</span></span>
+                        <a href="https://tribaldex.com/trade/ATHON" target="_blank" class="link-light">
+                            <span class="text-warning">
+                                <span class="market-style">Trade Athon&nbsp;</span>
+                                <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
+                                    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </div>
+                </div>                
+            </div>
         </div>
-
     </div>
 
+    <div id="surfhistorycard" class="mbody mt-0 d-none justify-content-center">
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card w-100">
+            <div class="m-3">
+                <div class="d-flex align-items-center mb-2">
+                    <p class="font-family-size-medium-large m-0">Surf Vote History</p>
+                    <button type="button" id="refreshSurfHistory" class="col1 btn-sm btn-danger ms-3 rounded-pill">Refresh</button>
+                </div>
+                <div class="tb-div">
+                    <table class="htable">
+                        <thead>
+                            <tr>
+                                <th>AUTHOR</th>
+                                <th>PERMLINK</th>
+                                <th>WEIGHT</th>
+                                <th>TIME</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="surfhistory">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 
-</div>
+    <div id="beehistorycard" class="mbody mt-0 d-none justify-content-center">
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card w-100">
+            <div class="m-3">
+                <div class="d-flex align-items-center mb-2">
+                    <p class="font-family-size-medium-large m-0">Bee Vote History</p>
+                    <button type="button" id="refreshBeeHistory" class="col1 btn-sm btn-danger ms-3 rounded-pill">Refresh</button>
+                </div>
+                <div class="tb-div">
+                    <table class="htable">
+                        <thead>
+                            <tr>
+                                <th>AUTHOR</th>
+                                <th>PERMLINK</th>
+                                <th>WEIGHT</th>
+                                <th>TIME</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="beehistory">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pobhistorycard" class="mbody mt-0 d-none justify-content-center">
+        <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card w-100">
+            <div class="m-3">
+                <div class="d-flex align-items-center mb-2">
+                    <p class="font-family-size-medium-large m-0">Pob Vote History</p>
+                    <button type="button" id="refreshPobHistory" class="col1 btn-sm btn-danger ms-3 rounded-pill">Refresh</button>
+                </div>
+                <div class="tb-div">
+                    <table class="htable">
+                        <thead>
+                            <tr>
+                                <th>AUTHOR</th>
+                                <th>PERMLINK</th>
+                                <th>WEIGHT</th>
+                                <th>TIME</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="pobhistory">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
     
-</body>
+    <div class="bottom-bar">
+        <div class="developed-by-container font-family-size-small-medium">
+            <!--<p>Developed by <a class="alih-color" href="https://peakd.com/@ali-h" target="_blank">@ali-h</a> & <a class="theguruasia-color" href="https://peakd.com/@theguruasia" target="_blank">@theguruasia</a></p>-->
+            <p>Version 1.0.1 Developed by <a class="alih-color" href="https://peakd.com/@helios.voter/posts" target="_blank">Team HELIOS</a></p>
+        </div>  
+        <div class="popup-by-container-hive font-family-size-small-medium">
+            <div>
+                <span class="popup-by-container-text">Hive API Node : </span>
+                <button id="popup-button-hive" class="popup-link" value="https://anyx.io">https://anyx.io</button>
+            </div>
+        </div>
+        <div class="popup-by-container-engine font-family-size-small-medium">
+            <div>            
+                <span class="popup-by-container-text">Engine API Node : </span>
+                <button id="popup-button-engine" class="popup-link" value="https://engine.rishipanthee.com/">https://engine.rishipanthee.com</button>
+            </div>
+        </div>
+    </div>
 
+    <div id="popup-container-hive" style="display: none;">
+        <p class="popup-container-text">Please select an API node:</p>
+        <table id="api-list-hive">
+            <thead>
+              <tr>
+                <th class="header-node-url-hive">Node URL</th>
+                <th class="header-status-hive">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="close-button-hive" class="close-btn">
+            <svg class="close-button-color" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div id="popup-container-engine" style="display: none;">
+        <p class="popup-container-text">Please select an API node:</p>
+        <table id="api-list-engine">
+            <thead>
+              <tr>
+                <th class="header-node-url-engine">Node URL</th>
+                <th class="header-status-engine">Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <button id="close-button-engine" class="close-btn">
+            <svg class="close-button-color" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </svg>
+        </button>
+    </div>
+</body>
 </html>
 
