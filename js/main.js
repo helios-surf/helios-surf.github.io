@@ -554,6 +554,8 @@ $(window).bind("load", function() {
         loadEngineNode();
         clickFunctions();
         actionTriggers();
+        // Call startUpdateBalanceInterval to start the interval
+        startUpdateBalanceInterval();
     });
 
     async function loadHiveNode() {
@@ -2574,10 +2576,7 @@ $(window).bind("load", function() {
         {
             console.log("Error at startUpdateBalanceInterval() : ", error);
         }
-    };
-    
-    // Call startUpdateBalanceInterval to start the interval
-    startUpdateBalanceInterval();
+    };    
 
     async function getAccountInfo (accountUser) {
         var accStatus = false;
