@@ -1237,18 +1237,18 @@ $(window).bind("load", function() {
                     $("#loading").removeClass("loading-style");
                     $("#status").text("Confirm the transaction through Keychain.");
                     const customJsons = CALLERJSON.map((item) => {
-                        var sendTo = "asimo";
+                        var sendTo = "";
                         if (item.type == "surf") 
                         {
-                            //sendTo = "helios.burn"; 
+                            sendTo = "helios.burn"; 
                         } 
                         else if (item.type == "bee") 
                         {
-                            //sendTo = "helios.bee";
+                            sendTo = "helios.bee";
                         } 
                         else if (item.type == "pob") 
                         {
-                            //sendTo = "helios.pob";
+                            sendTo = "helios.pob";
                         }
                 
                         return {
