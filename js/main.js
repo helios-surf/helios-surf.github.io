@@ -2561,6 +2561,24 @@ $(window).bind("load", function() {
         }
     };
 
+    function startUpdateBalanceInterval() {
+        try
+        {
+            // Call updateBalance initially
+            updateBalance();
+        
+            // Set interval to call updateBalance every 5 minutes (300,000 milliseconds)
+            setInterval(updateBalance, 5 * 60 * 1000);
+        }
+        catch (error)
+        {
+            console.log("Error at startUpdateBalanceInterval() : ", error);
+        }
+    };
+    
+    // Call startUpdateBalanceInterval to start the interval
+    startUpdateBalanceInterval();
+
     async function getAccountInfo (accountUser) {
         var accStatus = false;
         try
