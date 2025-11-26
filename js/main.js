@@ -17,11 +17,10 @@ $(window).bind("load", function() {
     ];
 
     var he_rpc_nodes = [
+	    "https://enginerpc.com",
         "https://api.primersion.com",	
-		"https://api2.hive-engine.com/rpc",	
-		"https://engine.rishipanthee.com/",
+		"https://api2.hive-engine.com/rpc",
 		"https://engine.beeswap.tools",				
-		"https://enginerpc.com",			 
 		"https://api.hive-engine.com/rpc",
 		"https://herpc.actifit.io",
 		"https://herpc.dtools.dev"
@@ -37,7 +36,7 @@ $(window).bind("load", function() {
     async function checkHiveNodeStatus(nodeUrl, statusElement) {
         try 
         {
-            const response = await axios.get(nodeUrl);
+            const response = await axios.get(nodeUrl, { timeout: 5000 });
             if (response.status === 200) 
             {
                 statusElement.textContent = "Working";
@@ -62,17 +61,11 @@ $(window).bind("load", function() {
     async function addHiveNodes() {
         try 
         {
-            var buttonHive = document.getElementById("popup-button-hive");
-            var popupHive = document.getElementById("popup-container-hive");
             const tableBody = document.querySelector("#api-list-hive tbody");
+            if (!tableBody) return;
+            
             const workingNodes = [];
-            const failedNodes = [];            
-
-            // Function to enable the button
-            function enableButton() 
-            {
-                buttonHive.disabled = false;
-            }
+            const failedNodes = [];
 
             // Clear the existing table body content
             tableBody.innerHTML = "";
@@ -123,39 +116,6 @@ $(window).bind("load", function() {
                     tableBody.appendChild(row);
                 });
             }, 5000);
-    
-            // Add event listeners to the rows in the table body
-            var rowsHive = tableBody.getElementsByTagName("tr");
-            for (var i = 0; i < rowsHive.length; i++) 
-            {
-                rowsHive[i].addEventListener("click", function (event) {
-                    // Prevent the default link behavior
-                    event.preventDefault();
-    
-                    // Get the node URL from the first cell in the row
-                    var nodeUrl = this.cells[0].textContent;
-    
-                    // Set the API endpoint to the selected node
-                    hive.api.setOptions({ url: nodeUrl });
-    
-                    // Update the button text
-                    buttonHive.value = nodeUrl;
-                    buttonHive.innerHTML = nodeUrl;
-    
-                    // Save the selected endpoint to local storage
-                    localStorage.setItem("selectedEndpoint", nodeUrl);
-    
-                    // Hide the popup
-                    popupHive.style.display = "none";
-                    
-                    enableButton();
-    
-                    // Reload the page after 1 second (adjust the time as needed)
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                });
-            }
         } 
         catch (error) 
         {
@@ -166,7 +126,7 @@ $(window).bind("load", function() {
     async function checkEngineNodeStatus(nodeUrl, statusElement) {
         try 
         {
-            const response = await axios.get(nodeUrl);
+            const response = await axios.get(nodeUrl, { timeout: 5000 });
             if (response.status === 200) 
             {
                 statusElement.textContent = "Working";
@@ -190,16 +150,11 @@ $(window).bind("load", function() {
 
     async function addEngineNodes() {
         try {
-            var buttonEngine = document.getElementById("popup-button-engine");
-            var popupEngine = document.getElementById("popup-container-engine");
             const tableBody = document.querySelector("#api-list-engine tbody");
+            if (!tableBody) return;
+            
             const workingNodes = [];
             const failedNodes = [];
-    
-            // Function to enable the button
-            function enableButton() {
-                buttonEngine.disabled = false;
-            }
     
             // Clear the existing table body content
             tableBody.innerHTML = "";
@@ -247,39 +202,6 @@ $(window).bind("load", function() {
                     tableBody.appendChild(row);
                 });
             }, 5000);
-    
-            // Add event listeners to the rows in the table body
-            var rowsEngine = tableBody.getElementsByTagName("tr");
-            for (var i = 0; i < rowsEngine.length; i++) 
-            {
-                rowsEngine[i].addEventListener("click", function (event) {
-                    // Prevent the default link behavior
-                    event.preventDefault();
-    
-                    // Get the node URL from the first cell in the row
-                    var nodeUrl = this.cells[0].textContent;
-    
-                    // Set the API endpoint to the selected node
-                    ssc = new SSC(nodeUrl);
-    
-                    // Update the button text
-                    buttonEngine.value = nodeUrl;
-                    buttonEngine.innerHTML = nodeUrl;
-    
-                    // Save the selected endpoint to local storage
-                    localStorage.setItem("selectedEngEndpoint", nodeUrl);
-    
-                    // Hide the popup
-                    popupEngine.style.display = "none";
-    
-                    enableButton();
-    
-                    // Reload the page after 1 second (adjust the time as needed)
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                });
-            }
         } 
         catch (error) 
         {
@@ -290,7 +212,12 @@ $(window).bind("load", function() {
     async function initializeHiveAPI() {
         var selectedEndpoint = await getSelectedEndpoint();
         console.log("SELECT HIVE API NODE : ", selectedEndpoint);
-        hive.api.setOptions({ url: selectedEndpoint });
+        hive.api.setOptions({ 
+            url: selectedEndpoint,
+            timeout: 8000, // 8 second timeout
+            failover_threshold: 3,
+            rebroadcast_threshold: 3
+        });
 
         var button = document.getElementById("popup-button-hive");
         button.value = selectedEndpoint;
@@ -319,7 +246,44 @@ $(window).bind("load", function() {
         }
     };
       
-    processAPIs();    
+    processAPIs();
+
+    // Automatic node failover function with timeout
+    async function callHiveApiWithFailover(apiCall, maxRetries = 3, timeout = 5000) {
+        const currentNode = hive.api.options.url;
+        const nodesToTry = [currentNode, ...rpc_nodes.filter(n => n !== currentNode)];
+        let lastError = null;
+        
+        for (let i = 0; i < Math.min(maxRetries, nodesToTry.length); i++) {
+            try {
+                const nodeUrl = nodesToTry[i];
+                hive.api.setOptions({ url: nodeUrl, timeout: timeout });
+                console.log(`Trying Hive node [${i + 1}/${maxRetries}]: ${nodeUrl}`);
+                
+                const result = await Promise.race([
+                    apiCall(),
+                    new Promise((_, reject) => 
+                        setTimeout(() => reject(new Error('Request timeout')), timeout)
+                    )
+                ]);
+                
+                console.log(`✓ Success with node: ${nodeUrl}`);
+                // Only save if it's different from the originally selected one
+                if (nodeUrl !== currentNode) {
+                    localStorage.setItem("selectedEndpoint", nodeUrl);
+                    console.log(`Saved new working node: ${nodeUrl}`);
+                }
+                return result;
+            } catch (error) {
+                lastError = error;
+                console.warn(`✗ Failed with node ${nodesToTry[i]}: ${error.message}`);
+                if (i === Math.min(maxRetries, nodesToTry.length) - 1) {
+                    throw new Error(`All ${maxRetries} node attempts failed. Last error: ${lastError.message}`);
+                }
+                // Continue to next node
+            }
+        }
+    }    
 
     hive.config.set('alternative_api_endpoints', rpc_nodes);
 
@@ -328,7 +292,7 @@ $(window).bind("load", function() {
 
     var user = null;
 
-    const MINHELIOS = 5;
+    const MINHELIOS = 1;
     const MINATH = 10;
 
     const TIMEOUT = 8000;
@@ -347,7 +311,9 @@ $(window).bind("load", function() {
     async function getBridge () {
         try
         {
-            const res = await hive.api.getAccountsAsync(['uswap']);
+            const res = await callHiveApiWithFailover(async () => {
+                return await hive.api.getAccountsAsync(['uswap']);
+            });
             console.log("res : ", res);
             const res2 = await ssc.findOne("tokens", "balances", { account: 'uswap', symbol: 'SWAP.HIVE' });
             console.log("res2 : ", res2);
@@ -368,7 +334,9 @@ $(window).bind("load", function() {
     async function getSurfHistory () {
         try
         {
-            const historyRaw = await hive.api.getAccountHistoryAsync("helios.voter", -1, 100, '1', null);        
+            const historyRaw = await callHiveApiWithFailover(async () => {
+                return await hive.api.getAccountHistoryAsync("helios.voter", -1, 100, '1', null);
+            });        
 
             // loop through history and create an array with only tx id, author, link and timestamp
             let history = historyRaw.map((tx) => {
@@ -423,14 +391,16 @@ $(window).bind("load", function() {
         }
         catch (error)
         {
-            console.log("Error at getSurfHistory() : ", );
+            console.log("Error at getSurfHistory() : ", error);
         }
     };
 
     async function getBeeHistory () {
         try
         {
-            const historyRaw = await hive.api.getAccountHistoryAsync("bee.voter", -1, 100, '1', null);        
+            const historyRaw = await callHiveApiWithFailover(async () => {
+                return await hive.api.getAccountHistoryAsync("bee.voter", -1, 100, '1', null);
+            });        
 
             // loop through history and create an array with only tx id, author, link and timestamp
             let history = historyRaw.map((tx) => {
@@ -485,14 +455,16 @@ $(window).bind("load", function() {
         }
         catch (error)
         {
-            console.log("Error at getBeeHistory() : ", );
+            console.log("Error at getBeeHistory() : ", error);
         }
     };    
 
     async function getPobHistory () {
         try
         {
-            const historyRaw = await hive.api.getAccountHistoryAsync("pob.voter", -1, 100, '1', null);        
+            const historyRaw = await callHiveApiWithFailover(async () => {
+                return await hive.api.getAccountHistoryAsync("pob.voter", -1, 100, '1', null);
+            });        
 
             // loop through history and create an array with only tx id, author, link and timestamp
             let history = historyRaw.map((tx) => {
@@ -547,7 +519,7 @@ $(window).bind("load", function() {
         }
         catch (error)
         {
-            console.log("Error at getPobHistory() : ", );
+            console.log("Error at getPobHistory() : ", error);
         }
     };    
 
@@ -619,7 +591,12 @@ $(window).bind("load", function() {
                     var nodeUrl = target.parentNode.cells[0].textContent;
     
                     // Set the API endpoint to the selected node
-                    hive.api.setOptions({ url: nodeUrl });
+                    hive.api.setOptions({ 
+                        url: nodeUrl,
+                        timeout: 8000, // 8 second timeout
+                        failover_threshold: 3,
+                        rebroadcast_threshold: 3
+                    });
     
                     // Update the button text
                     buttonHive.value = nodeUrl;
@@ -771,39 +748,29 @@ $(window).bind("load", function() {
         var heliosJson = [];
         try
         {
-            const res = await hive.api.getAccountsAsync([account]);
-            if (res.length > 0) 
+            // Fetch token balance and market info in parallel
+            const [balHelios, marketHelios] = await Promise.all([
+                getTokenBalance(account, "HELIOS"),
+                getMarketInfo(["HELIOS"])
+            ]);
+                
+            const savedHivePrice = localStorage.getItem("hivePrice");
+            var hiveUSD = parseFloat(savedHivePrice);                
+            if (hiveUSD <= 0 || isNaN(hiveUSD)) 
             {
-                const balHelios = await getTokenBalance(account, "HELIOS");
-                const marketHelios = await getMarketInfo(["HELIOS"]);                
+                hiveUSD = await getHiveUSD();
+            }                                
+            
+            if (balHelios.length > 0 && marketHelios.length > 0 && hiveUSD > 0) 
+            {
+                var val = (parseFloat(balHelios[0].balance) * parseFloat(marketHelios[0].lastPrice)) * parseFloat(hiveUSD);
                 
-                const savedHivePrice = localStorage.getItem("hivePrice");
-                var hiveUSD = parseFloat(savedHivePrice);                
-                if (hiveUSD <= 0 || isNaN(hiveUSD)) 
-                {
-                    hiveUSD = await getHiveUSD();
-                }                                
-                
-                if (balHelios.length > 0 && marketHelios.length > 0 && hiveUSD > 0) 
-                {
-                    var val = (parseFloat(balHelios[0].balance) * parseFloat(marketHelios[0].lastPrice)) * parseFloat(hiveUSD);
-                    
-                    var ddata = {
-                        "heliosVal" : dec(balHelios[0].balance),
-                        "hiveVal" :  parseFloat(val).toFixed(3)
-                    }
-                    heliosJson.push(ddata);
-                    return heliosJson;
-                } 
-                else 
-                {
-                    var ddata = {
-                        "heliosVal" : 0.0,
-                        "hiveVal" :  0.0
-                    } 
-                    heliosJson.push(ddata);
-                    return heliosJson;
+                var ddata = {
+                    "heliosVal" : dec(balHelios[0].balance),
+                    "hiveVal" :  parseFloat(val).toFixed(3)
                 }
+                heliosJson.push(ddata);
+                return heliosJson;
             } 
             else 
             {
@@ -831,39 +798,29 @@ $(window).bind("load", function() {
         var athonJson = [];
         try
         {
-            const res = await hive.api.getAccountsAsync([account]);
-            if (res.length > 0) 
+            // Fetch token balance and market info in parallel
+            const [balAthon, marketAthon] = await Promise.all([
+                getTokenBalance(account, "ATH"),
+                getMarketInfo(["ATH"])
+            ]);
+            
+            const savedHivePrice = localStorage.getItem("hivePrice");
+            var hiveUSD = parseFloat(savedHivePrice);                
+            if (hiveUSD <= 0 || isNaN(hiveUSD)) 
             {
-                const balAthon = await getTokenBalance(account, "ATH");
-                const marketAthon = await getMarketInfo(["ATH"]);
+                hiveUSD = await getHiveUSD();
+            }                                
+            
+            if (balAthon.length > 0 && marketAthon.length > 0 && hiveUSD > 0) 
+            {
+                var val = (parseFloat(balAthon[0].balance) * parseFloat(marketAthon[0].lastPrice)) * parseFloat(hiveUSD);
                 
-                const savedHivePrice = localStorage.getItem("hivePrice");
-                var hiveUSD = parseFloat(savedHivePrice);                
-                if (hiveUSD <= 0 || isNaN(hiveUSD)) 
-                {
-                    hiveUSD = await getHiveUSD();
-                }                                
-                
-                if (balAthon.length > 0 && marketAthon.length > 0 && hiveUSD > 0) 
-                {
-                    var val = (parseFloat(balAthon[0].balance) * parseFloat(marketAthon[0].lastPrice)) * parseFloat(hiveUSD);
-                    
-                    var ddata = {
-                        "athonVal" : dec(balAthon[0].balance),
-                        "hiveVal" :  parseFloat(val).toFixed(3)
-                    }
-                    athonJson.push(ddata);
-                    return athonJson;
-                } 
-                else 
-                {
-                    var ddata = {
-                        "athonVal" : 0.0,
-                        "hiveVal" :  0.0
-                    } 
-                    athonJson.push(ddata);
-                    return athonJson;
+                var ddata = {
+                    "athonVal" : dec(balAthon[0].balance),
+                    "hiveVal" :  parseFloat(val).toFixed(3)
                 }
+                athonJson.push(ddata);
+                return athonJson;
             } 
             else 
             {
@@ -891,7 +848,10 @@ $(window).bind("load", function() {
         var tokenJson = [];
         try
         {
-            tokenJson = await ssc.find("tokens", "balances", { account, symbol: symbol }, 1000, 0, []);
+            // Use symbol array to support batch queries if needed
+            const symbols = Array.isArray(symbol) ? symbol : [symbol];
+            tokenJson = await ssc.find("tokens", "balances", 
+                { account, symbol: { "$in": symbols } }, 1000, 0, []);
             return tokenJson;
         }
         catch (error)
@@ -947,7 +907,7 @@ $(window).bind("load", function() {
         var hPrice = 0.0;
         try
         {
-            const { data } = await axios.get(hiveCoinGeckoAPI);
+            const { data } = await axios.get(hiveCoinGeckoAPI, { timeout: 5000 });
             hPrice = data.hive.usd;            
             return hPrice;
         }
@@ -962,7 +922,7 @@ $(window).bind("load", function() {
         var hPrice = 0.0;
         try
         {
-            const { data } = await axios.get(hiveMessariAPI);
+            const { data } = await axios.get(hiveMessariAPI, { timeout: 5000 });
             hPrice = data.data.market_data.price_usd;            
             return hPrice;
         }
@@ -977,7 +937,7 @@ $(window).bind("load", function() {
         var hPrice = 0.0;
         try
         {
-            const { data } = await axios.get(hiveCoinCapAPI);
+            const { data } = await axios.get(hiveCoinCapAPI, { timeout: 5000 });
             hPrice = data.data.priceUsd;            
             return hPrice;
         }
@@ -992,7 +952,7 @@ $(window).bind("load", function() {
         var hPrice = 0.0;
         try
         {
-            const { data } = await axios.get(hiveCryptoCompareAPI);
+            const { data } = await axios.get(hiveCryptoCompareAPI, { timeout: 5000 });
             hPrice = data.USD;            
             return hPrice;
         }
@@ -1091,7 +1051,7 @@ $(window).bind("load", function() {
             if(marketInfo.length > 0)
             {
                 var helios_price = 0.0, helios_value = 0.0, helios_vol = 0.0, helios_change = 0.0;            
-                if(marketInfo[0].symbol == "HELIOS")
+                if(marketInfo.length > 0 && marketInfo[0] && marketInfo[0].symbol == "HELIOS")
                 {
                     helios_price = parseFloat(marketInfo[0].lastPrice) || 0.0;
                     helios_value = parseFloat(marketInfo[0].lastPrice * hiveUSD) || 0.0;
@@ -1100,7 +1060,7 @@ $(window).bind("load", function() {
                 }
 
                 var athon_price = 0.0, athon_value = 0.0, athon_vol = 0.0, athon_change = 0.0;            
-                if(marketInfo[1].symbol == "ATH")
+                if(marketInfo.length > 1 && marketInfo[1] && marketInfo[1].symbol == "ATH")
                 {
                     athon_price = parseFloat(marketInfo[1].lastPrice) || 0.0;
                     athon_value = parseFloat(marketInfo[1].lastPrice * hiveUSD) || 0.0;
@@ -1200,19 +1160,20 @@ $(window).bind("load", function() {
 
             postLinkField.addEventListener("input", async function() {
                 try
-                {                    
-                    var postInfo = await postURL(postLinkField.value);                                       
-                    await surfValidPost(postInfo[0]);
-                    await beeValidPost(postInfo[0]);
-                    await pobValidPost(postInfo[0]);                    
+                {
+                    var postInfo = await postURL(postLinkField.value);
+                    if(postInfo && postInfo.length > 0)
+                    {
+                        await surfValidPost(postInfo[0]);
+                        await beeValidPost(postInfo[0]);
+                        await pobValidPost(postInfo[0]);
+                    }
                 }
                 catch (error)
                 {
                     console.log("Error at postLinkField.addEventListener() - input : ", error);
                 }
-            }); 
-            
-            buttonBurnTokens.addEventListener("click", async function() {
+            });            buttonBurnTokens.addEventListener("click", async function() {
                 try 
                 {
                     var handShakeStatus = await keyChainAvailability();
@@ -1256,12 +1217,15 @@ $(window).bind("load", function() {
                             sendTo = "helios.pob";
                         }
                 
+                        // Convert ATHON to ATH for actual token transfer
+                        const tokenSymbol = item.symbol === "ATHON" ? "ATH" : item.symbol;
+                        
                         return {
                             contractName: 'tokens',
                             contractAction: 'transfer',
                             contractPayload: {
                                 to: sendTo,
-                                symbol: item.symbol,
+                                symbol: tokenSymbol,
                                 quantity: item.input,
                                 memo: item.link
                             }
@@ -1575,8 +1539,8 @@ $(window).bind("load", function() {
             async function updateSurfElements () {
                 try
                 {
-                    var postInfo = await postURL(postLinkField.value);                    
-                    if(postInfo[0].surfStatus == true)
+                    var postInfo = await postURL(postLinkField.value);
+                    if(postInfo && postInfo.length > 0 && postInfo[0].surfStatus == true)
                     {
                         buttonAddSurfAvail.removeAttribute("disabled");
                         surfAddSvg.removeAttribute("style");
@@ -1812,8 +1776,8 @@ $(window).bind("load", function() {
             async function updateBeeElements () {
                 try
                 {
-                    var postInfo = await postURL(postLinkField.value);                    
-                    if(postInfo[0].surfStatus == true)
+                    var postInfo = await postURL(postLinkField.value);
+                    if(postInfo && postInfo.length > 0 && postInfo[0].beeStatus == true)
                     {
                         buttonAddBeeAvail.removeAttribute("disabled");
                         beeAddSvg.removeAttribute("style");
@@ -2049,8 +2013,8 @@ $(window).bind("load", function() {
             async function updatePobElements () {
                 try
                 {
-                    var postInfo = await postURL(postLinkField.value);                    
-                    if(postInfo[0].surfStatus == true)
+                    var postInfo = await postURL(postLinkField.value);
+                    if(postInfo && postInfo.length > 0 && postInfo[0].pobStatus == true)
                     {
                         buttonAddPobAvail.removeAttribute("disabled");
                         pobAddSvg.removeAttribute("style");
@@ -2279,16 +2243,21 @@ $(window).bind("load", function() {
                     var accStatus = await getAccountInfo(usernameInput.value);
                     if(accStatus == true)
                     {
-                        const balHelios = await getTokenBalance(usernameInput.value, "HELIOS");                        
-                        if(balHelios.length > 0)
+                        // Fetch both token balances in a single query
+                        const balances = await getTokenBalance(usernameInput.value, ["HELIOS", "ATH"]);
+                        
+                        // Find HELIOS balance
+                        const balHelios = balances.find(b => b.symbol === "HELIOS");
+                        if(balHelios)
                         {
-                            heliosAmount = parseFloat(balHelios[0].balance) || 0.0;                            
+                            heliosAmount = parseFloat(balHelios.balance) || 0.0;                            
                         }
 
-                        const balAthon = await getTokenBalance(usernameInput.value, "ATH");                        
-                        if(balAthon.length > 0)
+                        // Find ATH balance
+                        const balAthon = balances.find(b => b.symbol === "ATH");
+                        if(balAthon)
                         {
-                            athonAmount = parseFloat(balAthon[0].balance) || 0.0;
+                            athonAmount = parseFloat(balAthon.balance) || 0.0;
                         }
 
                         // Iterate over the CALLERJSON array
@@ -2299,7 +2268,7 @@ $(window).bind("load", function() {
                             {
                                 heliosTotal += parseFloat(json.input) || 0.0;
                             } 
-                            else if (json.symbol === "ATHON") 
+                            else if (json.symbol === "ATHON" || json.symbol === "ATH") 
                             {
                                 athonTotal += parseFloat(json.input) || 0.0;
                             } 
@@ -2342,7 +2311,7 @@ $(window).bind("load", function() {
                         {
                             heliosTotal += parseFloat(json.input) || 0.0;
                         } 
-                        else if (json.symbol === "ATHON") 
+                        else if (json.symbol === "ATHON" || json.symbol === "ATH") 
                         {
                             athonTotal += parseFloat(json.input) || 0.0;
                         } 
@@ -2351,14 +2320,14 @@ $(window).bind("load", function() {
                     var marketInfo = await getMarketInfo(["HELIOS", "ATH"]);
                     if(marketInfo.length > 0)
                     {
-                        if(marketInfo[0].symbol == "HELIOS")
+                        if(marketInfo.length > 0 && marketInfo[0] && marketInfo[0].symbol == "HELIOS")
                         {
                             heliosLastPrice = parseFloat(marketInfo[0].lastPrice) || 0.0;
                             heliosLastDayPrice = parseFloat(marketInfo[0].lastDayPrice) || 0.0;
                             heliosAvgPrice = dec((heliosLastPrice + heliosLastDayPrice) / 2);
                         }
 
-                        if(marketInfo[1].symbol == "ATH")
+                        if(marketInfo.length > 1 && marketInfo[1] && marketInfo[1].symbol == "ATH")
                         {
                             athonLastPrice = parseFloat(marketInfo[1].lastPrice) || 0.0;
                             athonLastDayPrice = parseFloat(marketInfo[1].lastDayPrice) || 0.0;
@@ -2445,7 +2414,9 @@ $(window).bind("load", function() {
         {    
             const author = post_link.split("@")[1].split("/")[0];
             const link = post_link.split("@")[1].split("/")[1];            
-            var postData = await hive.api.getContentAsync(author, link);            
+            var postData = await callHiveApiWithFailover(async () => {
+                return await hive.api.getContentAsync(author, link);
+            });            
             if(postData != null || Object.keys(postData).length !== 0)
             {               
                 var postValidation = await isValid(postData);
@@ -2552,10 +2523,14 @@ $(window).bind("load", function() {
             var accStatus = await getAccountInfo(user);
             if(accStatus == true)
             {                 
-                var balHelios = await getHeliosBalances(user);               
+                // Fetch both balances in parallel for better performance
+                const [balHelios, balAthon] = await Promise.all([
+                    getHeliosBalances(user),
+                    getAthonBalances(user)
+                ]);
+                
                 $("#helios_bal").text(balHelios[0].heliosVal.toFixed(3));
                 $("#helios_bal_value").text(balHelios[0].hiveVal);
-                var balAthon = await getAthonBalances(user);        
                 $("#athon_bal").text(balAthon[0].athonVal.toFixed(3));
                 $("#athon_bal_value").text(balAthon[0].hiveVal);
             }
@@ -2585,8 +2560,10 @@ $(window).bind("load", function() {
         var accStatus = false;
         try
         {                                        
-            const accData = await hive.api.getAccountsAsync([accountUser]);
-            if(accData.length > 0)
+            const accData = await callHiveApiWithFailover(async () => {
+                return await hive.api.getAccountsAsync([accountUser]);
+            });
+            if(accData && accData.length > 0 && accData[0].name === accountUser)
             {
                 accStatus = true;
             }
@@ -2656,7 +2633,7 @@ $(window).bind("load", function() {
 });
 
 async function getSelectedEndpoint() {
-    var endpoint = await localStorage.getItem("selectedEndpoint");
+    var endpoint = localStorage.getItem("selectedEndpoint");
     if (endpoint) 
     {
       return endpoint;
@@ -2668,13 +2645,13 @@ async function getSelectedEndpoint() {
 };
 
 async function getSelectedEngEndpoint() {
-    var endpoint = await localStorage.getItem("selectedEngEndpoint");
+    var endpoint = localStorage.getItem("selectedEngEndpoint");
     if (endpoint) 
     {
       return endpoint;
     } 
     else 
     {
-      return "https://engine.rishipanthee.com";
+      return "https://enginerpc.com";
     }
 };
