@@ -293,7 +293,6 @@ $(window).bind("load", function() {
     var user = null;
 
     const MINHELIOS = 1;
-    const MINATH = 10;
 
     const TIMEOUT = 8000;
 
@@ -792,56 +791,6 @@ $(window).bind("load", function() {
             heliosJson.push(ddata);
             return heliosJson;
         }
-    };
-
-    async function getAthonBalances (account) {
-        var athonJson = [];
-        try
-        {
-            // Fetch token balance and market info in parallel
-            const [balAthon, marketAthon] = await Promise.all([
-                getTokenBalance(account, "ATH"),
-                getMarketInfo(["ATH"])
-            ]);
-            
-            const savedHivePrice = localStorage.getItem("hivePrice");
-            var hiveUSD = parseFloat(savedHivePrice);                
-            if (hiveUSD <= 0 || isNaN(hiveUSD)) 
-            {
-                hiveUSD = await getHiveUSD();
-            }                                
-            
-            if (balAthon.length > 0 && marketAthon.length > 0 && hiveUSD > 0) 
-            {
-                var val = (parseFloat(balAthon[0].balance) * parseFloat(marketAthon[0].lastPrice)) * parseFloat(hiveUSD);
-                
-                var ddata = {
-                    "athonVal" : dec(balAthon[0].balance),
-                    "hiveVal" :  parseFloat(val).toFixed(3)
-                }
-                athonJson.push(ddata);
-                return athonJson;
-            } 
-            else 
-            {
-                var ddata = {
-                    "athonVal" : 0.0,
-                    "hiveVal" :  0.0
-                } 
-                athonJson.push(ddata);
-                return athonJson;
-            }
-        }
-        catch (error)
-        {
-            console.log("Error at getAthonBalances() : ", error);
-            var ddata = {
-                "athonVal" : 0.0,
-                "hiveVal" :  0.0
-            } 
-            athonJson.push(ddata);
-            return athonJson;
-        }
     };   
 
     async function getTokenBalance (account, symbol) {
@@ -1039,7 +988,7 @@ $(window).bind("load", function() {
     async function refresh () {
         try
         {
-            var marketInfo = await getMarketInfo(["HELIOS", "ATH"]);
+            var marketInfo = await getMarketInfo(["HELIOS"]);
 
             const savedHivePrice = localStorage.getItem("hivePrice");
             var hiveUSD = parseFloat(savedHivePrice);                
@@ -1059,23 +1008,10 @@ $(window).bind("load", function() {
                     helios_change = parseFloat(marketInfo[0].priceChangePercent) || 0.0;
                 }
 
-                var athon_price = 0.0, athon_value = 0.0, athon_vol = 0.0, athon_change = 0.0;            
-                if(marketInfo.length > 1 && marketInfo[1] && marketInfo[1].symbol == "ATH")
-                {
-                    athon_price = parseFloat(marketInfo[1].lastPrice) || 0.0;
-                    athon_value = parseFloat(marketInfo[1].lastPrice * hiveUSD) || 0.0;
-                    athon_vol = parseFloat(marketInfo[1].volume * hiveUSD) || 0.0;
-                    athon_change = parseFloat(marketInfo[1].priceChangePercent) || 0.0;
-                }
-
                 $("#helios_price").text(helios_price.toFixed(3));
                 $("#helios_value").text(helios_value.toFixed(3));
                 $("#helios_vol").text(helios_vol.toFixed(3));
                 $("#helios_change").text(helios_change.toFixed(3));
-                $("#athon_price").text(athon_price.toFixed(3));
-                $("#athon_value").text(athon_value.toFixed(3));
-                $("#athon_vol").text(athon_vol.toFixed(3));
-                $("#athon_change").text(athon_change.toFixed(3));
             }
             else
             {
@@ -1083,10 +1019,6 @@ $(window).bind("load", function() {
                 $("#helios_value").text("0.000");
                 $("#helios_vol").text("0.000");
                 $("#helios_change").text("0.000");
-                $("#athon_price").text("0.000");
-                $("#athon_value").text("0.000");
-                $("#athon_vol").text("0.000");
-                $("#athon_change").text("0.000");
             }
         }
         catch (error)
@@ -1097,10 +1029,6 @@ $(window).bind("load", function() {
             $("#helios_value").text("0.000");
             $("#helios_vol").text("0.000");
             $("#helios_change").text("0.000");
-            $("#athon_price").text("0.000");
-            $("#athon_value").text("0.000");
-            $("#athon_vol").text("0.000");
-            $("#athon_change").text("0.000");
         }
     };
 
@@ -1138,7 +1066,6 @@ $(window).bind("load", function() {
             const buttonBurnTokens = document.getElementById("burn-token");
 
             const heliosBalanceInput = document.getElementById("helios_bal");
-            const athonBalanceInput = document.getElementById("athon_bal");
 
             usernameInput.addEventListener("input", async function() {
                 try
@@ -1216,16 +1143,13 @@ $(window).bind("load", function() {
                         {
                             sendTo = "helios.pob";
                         }
-                
-                        // Convert ATHON to ATH for actual token transfer
-                        const tokenSymbol = item.symbol === "ATHON" ? "ATH" : item.symbol;
                         
                         return {
                             contractName: 'tokens',
                             contractAction: 'transfer',
                             contractPayload: {
                                 to: sendTo,
-                                symbol: tokenSymbol,
+                                symbol: item.symbol,
                                 quantity: item.input,
                                 memo: item.link
                             }
@@ -1306,27 +1230,6 @@ $(window).bind("load", function() {
                 catch (error)
                 {
                     console.log("Error at heliosBalanceInput.addEventListener() - click:", error);
-                }
-            });
-
-            athonBalanceInput.addEventListener("click", async function() {
-                try
-                {
-                    const athonBalText = athonBalanceInput.textContent;
-                    if(!inputSurfAvail.disabled && !buttonSurfAvail.disabled)
-                    {
-                        inputSurfAvail.value = athonBalText;
-                        buttonSurfAvail.value = "ATHON";
-
-                        var inputVal = inputSurfAvail.value;
-                        var selectedOption = buttonSurfAvail.value;
-                        await selectSurfSymbol(inputVal, selectedOption, buttonAddSurfAvail, surfAddSvg);
-                        await removeSurfJson();
-                    }
-                }
-                catch (error)
-                {
-                    console.log("Error at athonBalanceInput.addEventListener() - click:", error);
                 }
             });
 
@@ -1472,22 +1375,6 @@ $(window).bind("load", function() {
                             buttonSurfAddRemove.setAttribute("disabled", "disabled"); 
                         }
                     }
-
-                    if(tokenSymbol == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
-                        {
-                            buttonAddSurfAvail.removeAttribute("disabled");
-                            surfAddSvg.removeAttribute("style");
-                            buttonSurfAddRemove.setAttribute("disabled", "disabled"); 
-                        }
-                        else
-                        {
-                            buttonAddSurfAvail.setAttribute("disabled", "disabled");
-                            surfAddSvg.removeAttribute("style");
-                            buttonSurfAddRemove.setAttribute("disabled", "disabled"); 
-                        }
-                    }
                 }
                 catch (error)
                 {
@@ -1501,22 +1388,6 @@ $(window).bind("load", function() {
                     if(selectedOption == "HELIOS")
                     {
                         if(inputVal >= MINHELIOS)
-                        {
-                            buttonAddSurfAvail.removeAttribute("disabled");
-                            surfAddSvg.removeAttribute("style");
-                            buttonSurfAddRemove.setAttribute("disabled", "disabled"); 
-                        }
-                        else
-                        {
-                            buttonAddSurfAvail.setAttribute("disabled", "disabled");
-                            surfAddSvg.removeAttribute("style");
-                            buttonSurfAddRemove.setAttribute("disabled", "disabled"); 
-                        }
-                    }
-
-                    if(selectedOption == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
                         {
                             buttonAddSurfAvail.removeAttribute("disabled");
                             surfAddSvg.removeAttribute("style");
@@ -1709,22 +1580,6 @@ $(window).bind("load", function() {
                             buttonBeeAddRemove.setAttribute("disabled", "disabled");
                         }
                     }
-
-                    if(tokenSymbol == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
-                        {
-                            buttonAddBeeAvail.removeAttribute("disabled");
-                            beeAddSvg.removeAttribute("style");
-                            buttonBeeAddRemove.setAttribute("disabled", "disabled");
-                        }
-                        else
-                        {
-                            buttonAddBeeAvail.setAttribute("disabled", "disabled");
-                            beeAddSvg.removeAttribute("style");
-                            buttonBeeAddRemove.setAttribute("disabled", "disabled");
-                        }
-                    }
                 }
                 catch (error)
                 {
@@ -1738,22 +1593,6 @@ $(window).bind("load", function() {
                     if(selectedOption == "HELIOS")
                     {
                         if(inputVal >= MINHELIOS)
-                        {
-                            buttonAddBeeAvail.removeAttribute("disabled");
-                            beeAddSvg.removeAttribute("style");
-                            buttonBeeAddRemove.setAttribute("disabled", "disabled");
-                        }
-                        else
-                        {
-                            buttonAddBeeAvail.setAttribute("disabled", "disabled");
-                            beeAddSvg.removeAttribute("style");
-                            buttonBeeAddRemove.setAttribute("disabled", "disabled");
-                        }
-                    }
-
-                    if(selectedOption == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
                         {
                             buttonAddBeeAvail.removeAttribute("disabled");
                             beeAddSvg.removeAttribute("style");
@@ -1946,22 +1785,6 @@ $(window).bind("load", function() {
                             buttonPobAddRemove.setAttribute("disabled", "disabled");
                         }
                     }
-
-                    if(tokenSymbol == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
-                        {
-                            buttonAddPobAvail.removeAttribute("disabled");
-                            pobAddSvg.removeAttribute("style");
-                            buttonPobAddRemove.setAttribute("disabled", "disabled");
-                        }
-                        else
-                        {
-                            buttonAddPobAvail.setAttribute("disabled", "disabled");
-                            pobAddSvg.removeAttribute("style");
-                            buttonPobAddRemove.setAttribute("disabled", "disabled");
-                        }
-                    }
                 }
                 catch (error)
                 {
@@ -1975,22 +1798,6 @@ $(window).bind("load", function() {
                     if(selectedOption == "HELIOS")
                     {
                         if(inputVal >= MINHELIOS)
-                        {
-                            buttonAddPobAvail.removeAttribute("disabled");
-                            pobAddSvg.removeAttribute("style");
-                            buttonPobAddRemove.setAttribute("disabled", "disabled");
-                        }
-                        else
-                        {
-                            buttonAddPobAvail.setAttribute("disabled", "disabled");
-                            pobAddSvg.removeAttribute("style");
-                            buttonPobAddRemove.setAttribute("disabled", "disabled");
-                        }
-                    }
-
-                    if(selectedOption == "ATHON")
-                    {
-                        if(inputVal >= MINATH)
                         {
                             buttonAddPobAvail.removeAttribute("disabled");
                             pobAddSvg.removeAttribute("style");
@@ -2238,26 +2045,19 @@ $(window).bind("load", function() {
             async function burnButtonInitiate () {
                 try
                 {
-                    var heliosAmount = 0.0, athonAmount = 0.0;
-                    var heliosTotal = 0.0, athonTotal = 0.0;
+                    var heliosAmount = 0.0;
+                    var heliosTotal = 0.0;
                     var accStatus = await getAccountInfo(usernameInput.value);
                     if(accStatus == true)
                     {
-                        // Fetch both token balances in a single query
-                        const balances = await getTokenBalance(usernameInput.value, ["HELIOS", "ATH"]);
+                        // Fetch HELIOS token balance
+                        const balances = await getTokenBalance(usernameInput.value, ["HELIOS"]);
                         
                         // Find HELIOS balance
                         const balHelios = balances.find(b => b.symbol === "HELIOS");
                         if(balHelios)
                         {
                             heliosAmount = parseFloat(balHelios.balance) || 0.0;                            
-                        }
-
-                        // Find ATH balance
-                        const balAthon = balances.find(b => b.symbol === "ATH");
-                        if(balAthon)
-                        {
-                            athonAmount = parseFloat(balAthon.balance) || 0.0;
                         }
 
                         // Iterate over the CALLERJSON array
@@ -2267,14 +2067,10 @@ $(window).bind("load", function() {
                             if (json.symbol === "HELIOS") 
                             {
                                 heliosTotal += parseFloat(json.input) || 0.0;
-                            } 
-                            else if (json.symbol === "ATHON" || json.symbol === "ATH") 
-                            {
-                                athonTotal += parseFloat(json.input) || 0.0;
-                            } 
+                            }
                         }
 
-                        if(heliosAmount >= heliosTotal && athonAmount >= athonTotal)
+                        if(heliosAmount >= heliosTotal)
                         {
                             buttonBurnTokens.removeAttribute("disabled");
                         }
@@ -2298,10 +2094,9 @@ $(window).bind("load", function() {
             async function totalBurnTextProcess () {
                 try
                 {
-                    var heliosTotal = 0.0, athonTotal = 0.0;
+                    var heliosTotal = 0.0;
                     var estimateUSD = 0.0;
                     var heliosLastPrice = 0.0, heliosLastDayPrice = 0.0, heliosAvgPrice = 0.0;
-                    var athonLastPrice = 0.0, athonLastDayPrice = 0.0, athonAvgPrice = 0.0;
                     $("#total_burn").text("0");
                     $("#burn_usd_val").text("$ 0");
                     for (const json of CALLERJSON) 
@@ -2310,14 +2105,10 @@ $(window).bind("load", function() {
                         if (json.symbol === "HELIOS") 
                         {
                             heliosTotal += parseFloat(json.input) || 0.0;
-                        } 
-                        else if (json.symbol === "ATHON" || json.symbol === "ATH") 
-                        {
-                            athonTotal += parseFloat(json.input) || 0.0;
-                        } 
+                        }
                     }
 
-                    var marketInfo = await getMarketInfo(["HELIOS", "ATH"]);
+                    var marketInfo = await getMarketInfo(["HELIOS"]);
                     if(marketInfo.length > 0)
                     {
                         if(marketInfo.length > 0 && marketInfo[0] && marketInfo[0].symbol == "HELIOS")
@@ -2325,13 +2116,6 @@ $(window).bind("load", function() {
                             heliosLastPrice = parseFloat(marketInfo[0].lastPrice) || 0.0;
                             heliosLastDayPrice = parseFloat(marketInfo[0].lastDayPrice) || 0.0;
                             heliosAvgPrice = dec((heliosLastPrice + heliosLastDayPrice) / 2);
-                        }
-
-                        if(marketInfo.length > 1 && marketInfo[1] && marketInfo[1].symbol == "ATH")
-                        {
-                            athonLastPrice = parseFloat(marketInfo[1].lastPrice) || 0.0;
-                            athonLastDayPrice = parseFloat(marketInfo[1].lastDayPrice) || 0.0;
-                            athonAvgPrice = dec((athonLastPrice + athonLastDayPrice) / 2);
                         }
                     }
 
@@ -2342,22 +2126,10 @@ $(window).bind("load", function() {
                         hiveUSD = await getHiveUSD();
                     }
 
-                    if (heliosTotal > 0.0 && athonTotal <= 0.0) 
+                    if (heliosTotal > 0.0) 
                     {
                         estimateUSD = parseFloat(heliosTotal * heliosAvgPrice * hiveUSD) || 0.0;
                         $("#total_burn").text(heliosTotal + " HELIOS");
-                        $("#burn_usd_val").text("$ " + estimateUSD.toFixed(3));
-                    } 
-                    else if (athonTotal > 0.0 && heliosTotal <= 0.0) 
-                    {
-                        estimateUSD = parseFloat(athonTotal * athonAvgPrice * hiveUSD) || 0.0;
-                        $("#total_burn").text(athonTotal + " ATHON");
-                        $("#burn_usd_val").text("$ " + estimateUSD.toFixed(3));
-                    } 
-                    else if (heliosTotal > 0.0 && athonTotal > 0.0) 
-                    {
-                        estimateUSD = parseFloat(((heliosTotal * heliosAvgPrice) + (athonTotal * athonAvgPrice)) * hiveUSD) || 0.0;
-                        $("#total_burn").text(heliosTotal + " HELIOS & " + athonTotal + " ATHON");
                         $("#burn_usd_val").text("$ " + estimateUSD.toFixed(3));
                     }                    
                 }
@@ -2519,29 +2291,22 @@ $(window).bind("load", function() {
 
     async function updateBalance() { 
         try
-        {            
+        {
             var accStatus = await getAccountInfo(user);
             if(accStatus == true)
             {                 
-                // Fetch both balances in parallel for better performance
-                const [balHelios, balAthon] = await Promise.all([
-                    getHeliosBalances(user),
-                    getAthonBalances(user)
-                ]);
+                // Fetch HELIOS balance
+                const balHelios = await getHeliosBalances(user);
                 
                 $("#helios_bal").text(balHelios[0].heliosVal.toFixed(3));
                 $("#helios_bal_value").text(balHelios[0].hiveVal);
-                $("#athon_bal").text(balAthon[0].athonVal.toFixed(3));
-                $("#athon_bal_value").text(balAthon[0].hiveVal);
             }
         }
         catch (error)
         {
             console.log("Error at updateBalance() : ", error);
         }
-    };
-
-    function startUpdateBalanceInterval() {
+    };    function startUpdateBalanceInterval() {
         try
         {
             // Call updateBalance initially

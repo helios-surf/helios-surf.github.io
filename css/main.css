@@ -24,6 +24,203 @@ img {
     height: 65;
 }
 
+/* Market Card Styles */
+.market-card {
+    background: linear-gradient(135deg, #2a2a2a 0%, #1e1e1e 100%);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.market-card:hover {
+    box-shadow: 0 6px 20px rgba(253, 187, 82, 0.2);
+    transform: translateY(-2px);
+}
+
+.market-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(253, 187, 82, 0.2);
+}
+
+.market-logo-link {
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.market-logo-link:hover {
+    transform: scale(1.05);
+}
+
+.market-logo {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 2px solid #FDBB52;
+    padding: 3px;
+    background: #1e1e1e;
+}
+
+.market-title {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.token-name {
+    font-size: 20px;
+    font-weight: 600;
+    color: #FDBB52;
+    letter-spacing: 0.5px;
+}
+
+.trade-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: #15b4fd;
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    padding: 4px 8px;
+    border-radius: 5px;
+    width: fit-content;
+}
+
+.trade-link:hover {
+    color: #FDBB52;
+    background: rgba(253, 187, 82, 0.1);
+}
+
+.trade-text {
+    font-weight: 500;
+}
+
+.trade-icon {
+    transition: transform 0.3s ease;
+}
+
+.trade-link:hover .trade-icon {
+    transform: translateX(2px) translateY(-2px);
+}
+
+.market-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.stat-row:hover {
+    background: rgba(253, 187, 82, 0.05);
+    transform: translateX(3px);
+}
+
+.stat-label {
+    font-size: 14px;
+    color: #999;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: #fff;
+}
+
+/* Mobile Responsive Styles */
+@media (max-width: 1120px) {
+    .market-card {
+        padding: 15px;
+    }
+    
+    .market-header {
+        gap: 12px;
+        margin-bottom: 15px;
+        padding-bottom: 12px;
+    }
+    
+    .market-logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .token-name {
+        font-size: 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .market-card {
+        padding: 15px;
+        margin: 0;
+    }
+    
+    .market-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 10px;
+    }
+    
+    .market-title {
+        align-items: center;
+    }
+    
+    .stat-row {
+        padding: 12px;
+    }
+    
+    .stat-label,
+    .stat-value {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .market-logo {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .token-name {
+        font-size: 16px;
+    }
+    
+    .trade-link {
+        font-size: 12px;
+    }
+    
+    .stat-row {
+        padding: 10px;
+        gap: 8px;
+    }
+    
+    .stat-label {
+        font-size: 13px;
+    }
+    
+    .stat-value {
+        font-size: 13px;
+        text-align: right;
+    }
+}
+
 .box {
     display: flex;
     align-items: center;
@@ -149,6 +346,63 @@ a {
 @media (max-width: 990px) { 
     .card {
         width: 100%!important;
+    }
+    
+    .column-one-size,
+    .column-two-size,
+    .column-three-size {
+        width: 100% !important;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    #logo {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .font-family-size-large {
+        font-size: 20px;
+    }
+    
+    .font-family-size-medium-large {
+        font-size: 18px;
+    }
+    
+    .font-family-size-medium {
+        font-size: 15px;
+    }
+    
+    .wallet-div-one,
+    .wallet-div-two {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 5px;
+    }
+    
+    .m-3 {
+        margin: 1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .font-family-size-large {
+        font-size: 18px;
+    }
+    
+    .font-family-size-medium-large {
+        font-size: 16px;
+    }
+    
+    .btn-load,
+    .btn-scale,
+    .btn-add {
+        font-size: 14px !important;
+    }
+    
+    .link-button {
+        width: 100%;
     }
 }
 
@@ -394,6 +648,10 @@ a {
     font-weight: 500;
     border: none;
     transition: background-color 0.5s ease-in-out;
+    padding: 0.25rem 0.75rem !important;
+    width: auto !important;
+    font-size: 13px !important;
+    min-width: fit-content !important;
 }
 
 .col:hover {

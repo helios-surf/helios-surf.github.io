@@ -51,14 +51,6 @@
                         <p class="m-0"><span class="pointer font-family-size-small-medium">$ <span id="helios_bal_value" class="qt qty-color">0</span></span></p>
                     </div>
                 </div>
-                <div class="d-flex mb-2">
-                    <div class="wallet-div-one">
-                        <p class="m-0"><span class="pointer font-family-size-medium"><span id="athon_bal" class="qt qty-color">0</span> <span class="sym">ATH</span></span></p>
-                    </div>
-                    <div class="wallet-div-two">
-                        <p class="m-0"><span class="pointer font-family-size-small-medium">$ <span id="athon_bal_value" class="qt qty-color">0</span></span></p>
-                    </div>
-                </div>
                 <hr>
                 <div class="d-flex mb-2">
                     <span class="font-family-size-medium-large join-style">Join us:</span>
@@ -149,8 +141,6 @@
                     <span class="font-family-size-small-medium mb-2">
                         Minimum:&nbsp;
                         <span id="minimum" class="font-family-size-small-medium mb-2 text-info">1 HELIOS</span>
-                        &nbsp;||&nbsp;
-                        <span id="minimum" class="font-family-size-small-medium mb-2 text-info">10 ATHON</span>
                     </span>
                 </div>
                 <div class="d-flex mt-2">
@@ -177,7 +167,6 @@
                                 <div class="input-group-append input-group-sm">
                                     <select disabled id="button-surf-avail" class="form-select form-select-lg input select-change">
                                         <option value="HELIOS">HELIOS</option>
-                                        <option value="ATHON">ATHON</option>
                                     </select>
                                 </div>
                             </div>
@@ -214,7 +203,6 @@
                                 <div class="input-group-append input-group-sm">
                                     <select disabled id="button-bee-avail" class="form-select form-select-lg input select-change">
                                         <option value="HELIOS">HELIOS</option>
-                                        <option value="ATHON">ATHON</option>
                                     </select>
                                 </div>
                             </div>
@@ -251,7 +239,6 @@
                                 <div class="input-group-append input-group-sm">
                                     <select disabled id="button-pob-avail" class="form-select form-select-lg input select-change">
                                         <option value="HELIOS">HELIOS</option>
-                                        <option value="ATHON">ATHON</option>
                                     </select>
                                 </div>
                             </div>
@@ -296,53 +283,57 @@
 
         <div class="d-flex flex-column rounded-3 bg p-0 m-3 mt-0 card column-three-size">
             <div class="m-3">
-                <p class="font-family-size-medium-large mb-2">
-                    <span class="market-style">Market Detail</span>
-                    <button type="button" id="refresh" class="col btn-sm btn-info ms-2 rounded-pill">Refresh</button>
-                </p>
-                <div class="d-flex mb-2 align-items-center">
-                    <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
-                        <img class="market" src="assets/helios-static.png">
-                    </a>
-                    <div class="ms-3 d-flex flex-column">
-                        <span class="font-family-size-medium">HELIOS</span>
-                        <span class="font-family-size-small-medium">Price: <span class="text-info" id="helios_price">0.00</span> <span class="text-info">HIVE</span></span>
-                        <span class="font-family-size-small-medium">Value: $ <span class="text-info" id="helios_value">0.00</span></span>
-                        <span class="font-family-size-small-medium">Volume: $ <span class="text-info" id="helios_vol">0.00</span></span>
-                        <span class="font-family-size-small-medium">Change: <span class="text-info" id="helios_change">0.00</span></span>
-                        <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
-                            <span class="text-warning">
-                                <span class="market-style">Trade Helios&nbsp;</span>
-                                <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <p class="font-family-size-medium-large mb-0">
+                        <span class="market-style">Market Detail</span>
+                    </p>
+                    <button type="button" id="refresh" class="col btn-sm rounded-pill ms-3">Refresh</button>
+                </div>
+                
+                <div class="market-card">
+                    <div class="market-header">
+                        <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light market-logo-link">
+                            <img class="market-logo" src="assets/helios-static.png" alt="HELIOS">
+                        </a>
+                        <div class="market-title">
+                            <span class="token-name">HELIOS</span>
+                            <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="trade-link">
+                                <span class="trade-text">Trade</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="trade-icon" viewBox="0 0 16 16">
                                     <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
                                     <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
                                 </svg>
-                            </span>
-                        </a>
+                            </a>
+                        </div>
                     </div>
-                </div> 
-                <hr>
-                <div class="d-flex mb-2 align-items-center">
-                    <a href="https://tribaldex.com/trade/HELIOS" target="_blank" class="link-light">
-                        <img class="market" src="assets/ath-static.png">
-                    </a>
-                    <div class="ms-3 d-flex flex-column">
-                        <span class="font-family-size-medium">ATHON</span>
-                        <span class="font-family-size-small-medium">Price: <span class="text-info" id="athon_price">0.00</span> <span class="text-info">HIVE</span></span>
-                        <span class="font-family-size-small-medium">Value: $ <span class="text-info" id="athon_value">0.00</span></span>
-                        <span class="font-family-size-small-medium">Volume: $ <span class="text-info" id="athon_vol">0.00</span></span>
-                        <span class="font-family-size-small-medium">Change: <span class="text-info" id="athon_change">0.00</span></span>
-                        <a href="https://tribaldex.com/trade/ATHON" target="_blank" class="link-light">
-                            <span class="text-warning">
-                                <span class="market-style">Trade Athon&nbsp;</span>
-                                <svg style="vertical-align: middle;" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-up-right" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8.636 3.5a.5.5 0 0 0-.5-.5H1.5A1.5 1.5 0 0 0 0 4.5v10A1.5 1.5 0 0 0 1.5 16h10a1.5 1.5 0 0 0 1.5-1.5V7.864a.5.5 0 0 0-1 0V14.5a.5.5 0 0 1-.5.5h-10a.5.5 0 0 1-.5-.5v-10a.5.5 0 0 1 .5-.5h6.636a.5.5 0 0 0 .5-.5z"/>
-                                    <path fill-rule="evenodd" d="M16 .5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793L6.146 9.146a.5.5 0 1 0 .708.708L15 1.707V5.5a.5.5 0 0 0 1 0v-5z"/>
-                                </svg>
+                    
+                    <div class="market-stats">
+                        <div class="stat-row">
+                            <span class="stat-label">Price</span>
+                            <span class="stat-value">
+                                <span id="helios_price" class="text-info">0.00</span> HIVE
                             </span>
-                        </a>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Value</span>
+                            <span class="stat-value">
+                                $ <span id="helios_value" class="text-info">0.00</span>
+                            </span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Volume</span>
+                            <span class="stat-value">
+                                $ <span id="helios_vol" class="text-info">0.00</span>
+                            </span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Change</span>
+                            <span class="stat-value" id="helios_change_wrapper">
+                                <span id="helios_change" class="text-info">0.00</span>%
+                            </span>
+                        </div>
                     </div>
-                </div>                
+                </div>
             </div>
         </div>
     </div>
